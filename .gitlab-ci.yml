@@ -1,0 +1,21 @@
+image: maven:3-openjdk-18
+
+cache:
+  paths:
+    - .m2/repository
+  # Only keep cache across same branch.
+  key: "mvn-cache-$CI_BUILD_REF_NAME"
+
+variables:
+  # Tell maven to use this directory for downloading packages for caching.
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+
+build-jar:
+  stage: build
+  script:
+    - mvn clean package
+  artifacts:
+    # Keep all packaged .jar files.
+    paths:
+      - target/*.jar
+    expire_in: "30 days"
