@@ -19,6 +19,7 @@ import org.keycloak.models.credential.OTPCredentialModel;
 import org.keycloak.models.credential.WebAuthnCredentialModel;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
+import org.keycloak.models.RequiredActionProviderModel;
 import org.keycloak.models.UserModel;
 import org.keycloak.models.utils.FormMessage;
 import org.keycloak.services.validation.Validation;
@@ -27,6 +28,7 @@ import org.keycloak.sessions.AuthenticationSessionModel;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 @JBossLog
@@ -35,7 +37,7 @@ public class MFAEnforcerAuthenticator implements Authenticator {
     private static final Logger LOGGER = Logger.getLogger(MFAEnforcerAuthenticator.class);
 
     static final String WEBAUTHN_REGISTER_REQUIRED_ACTION_ID = WebAuthnRegisterFactory.PROVIDER_ID;
-    static final String OTP_REGISTER_REQUIRED_ACTION_ID = new UpdateTotp().getId();  
+    static final String OTP_REGISTER_REQUIRED_ACTION_ID = new UpdateTotp().getId();
 
     @Override
     public void authenticate(AuthenticationFlowContext context) {
@@ -49,9 +51,21 @@ public class MFAEnforcerAuthenticator implements Authenticator {
     }
 
     protected Response createForm(AuthenticationFlowContext context, Consumer<LoginFormsProvider> formCustomizer) {
+        // Check, which required actions are enabled within the realm.
+        // Tell the form, which ones are enabled in order to show the corresponding options.
+        final RealmModel realm = context.getRealm();
+        ArrayList<String> enabledOptions = new ArrayList<>();
+        if (this.isRequiredActionEnabledInRealm(realm, OTP_REGISTER_REQUIRED_ACTION_ID)) {
+            enabledOptions.add("totp");
+        }
+        if (this.isRequiredActionEnabledInRealm(realm, WEBAUTHN_REGISTER_REQUIRED_ACTION_ID)) {
+            enabledOptions.add("webauthn");
+        }
+
         LoginFormsProvider form = context.form();
         form.setAttribute("username", context.getUser().getUsername());
         form.setAttribute("actionUri", context.getActionUrl(context.generateAccessCode()));
+        form.setAttribute("enabledOptions", enabledOptions.toArray());
 
         if (formCustomizer != null) {
             formCustomizer.accept(form);
@@ -59,6 +73,11 @@ public class MFAEnforcerAuthenticator implements Authenticator {
 
         // Load form from src/main/resources/theme-resources/templates/
         return form.createForm("select-mfa-type-form.ftl");
+    }
+
+    private boolean isRequiredActionEnabledInRealm(RealmModel realm, String actionAlias) {
+        final RequiredActionProviderModel requiredActionProvider = realm.getRequiredActionProviderByAlias(actionAlias);
+        return requiredActionProvider != null && requiredActionProvider.isEnabled();
     }
 
     protected Map<String, String> getConfig(AuthenticationFlowContext context) {
