@@ -77,19 +77,19 @@ public class MFAEnforcerAuthenticator implements Authenticator {
         UserModel user = context.getUser();
         KeycloakSession session = context.getSession();
         MultivaluedMap<String, String> formData = context.getHttpRequest().getDecodedFormParameters();
-        
+
         EventBuilder errorEvent = event.clone().event(EventType.LOGIN_ERROR)
             .client(authSession.getClient())
             .user(authSession.getAuthenticatedUser());
 
-        if (formData.containsKey("totp")) { 
+        if (formData.containsKey("totp")) {
             this.addRequiredActionForAuthSession(authSession, OTP_REGISTER_REQUIRED_ACTION_ID);
         } else if (formData.containsKey("webauthn")) {
             this.addRequiredActionForAuthSession(authSession, WEBAUTHN_REGISTER_REQUIRED_ACTION_ID);
         } else {
             Response challenge = this.createForm(context, form -> {
                 // null as field means `GLOBAL`
-                form.addError(new FormMessage(null, "Invalid Input"));
+                form.addError(new FormMessage(null, "Invalid input. Please contact your administrator."));
             });
 
             context.challenge(challenge);
@@ -108,7 +108,7 @@ public class MFAEnforcerAuthenticator implements Authenticator {
         authSession.removeRequiredAction(OTP_REGISTER_REQUIRED_ACTION_ID);
         authSession.removeRequiredAction(WEBAUTHN_REGISTER_REQUIRED_ACTION_ID);
         // And add the user-selected action.
-        authSession.addRequiredAction(actionId); 
+        authSession.addRequiredAction(actionId);
     }
 
     @Override
@@ -131,7 +131,6 @@ public class MFAEnforcerAuthenticator implements Authenticator {
     public boolean configuredFor(KeycloakSession session, RealmModel realm, UserModel user) {
         return true;
     }
-
 
     @Override
     public void setRequiredActions(KeycloakSession session, RealmModel realm, UserModel user) {

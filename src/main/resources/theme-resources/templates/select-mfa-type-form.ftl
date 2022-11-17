@@ -1,18 +1,18 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayInfo=true; section>
     <#if section = "title">
-        Setup Multi Factor Auth
+        ${msg("mfaEnforcerFormTitle")}
     <#elseif section = "header">
-        Select Multi Factor Auth
+        ${msg("mfaEnforcerFormTitle")}
     <#elseif section = "form">
 
-        <h1>Hello ${username}</h1>
+        <h1>${msg("mfaEnforcerHello")} ${username}</h1>
         <p>
-            Please setup Multi-Factor-Authentication via one of two options:
+            ${msg("mfaEnforcerExplanation")}
         </p>
         <ul>
-            <li><i>Use WebAuthn with FIDO authenticator:</i> Description Text about FIDO</li>
-            <li><i>Use TOTP with Authenticator app:</i> Description text about TOTP</li>
+            <li><b>${msg("mfaEnforcerWebAuthnOptionTitle")}:</b> ${msg("mfaEnforcerWebAuthnOptionDescription")}</li>
+            <li><b>${msg("mfaEnforcerTOTPOptionTitle")}:</b> ${msg("mfaEnforcerTOTPOptionDescription")}</li>
         </ul>
         <form id="kc-select-mfa-form" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post">
             <div class="${properties.kcFormGroupClass!}">
@@ -21,13 +21,13 @@
                         class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonLargeClass!}"
                         type="submit"
                         name="webauthn"
-                        value="Use WebAuthn"
+                        value="${msg("mfaEnforcerWebAuthnOptionButton")}"
                     />
                     <input
                         class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonLargeClass!}"
                         type="submit"
                         name="totp"
-                        value="Use TOTP"
+                        value="${msg("mfaEnforcerTOTPOptionButton")}"
                     />
                 </div>
             </div>
