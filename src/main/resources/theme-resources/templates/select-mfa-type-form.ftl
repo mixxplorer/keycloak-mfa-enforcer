@@ -12,7 +12,7 @@
         </p>
         <ul>
             <#if enabledOptions?seq_contains("webauthn")>
-            <li><b>${msg("mfaEnforcerWebAuthnOptionTitle")}:</b> ${msg("mfaEnforcerWebAuthnOptionDescription")}</li>
+            <li><b>${msg("mfaEnforcerWebAuthnOptionTitle")}:</b> ${msg("mfaEnforcerWebAuthnOptionDescription")}${webAuthnIsCrossPlatform?then("", " " + msg("mfaEnforcerWebAuthnOptionPassKeysDescription"))}</li>
             </#if>
             <#if enabledOptions?seq_contains("totp")>
             <li><b>${msg("mfaEnforcerTOTPOptionTitle")}:</b> ${msg("mfaEnforcerTOTPOptionDescription")}</li>

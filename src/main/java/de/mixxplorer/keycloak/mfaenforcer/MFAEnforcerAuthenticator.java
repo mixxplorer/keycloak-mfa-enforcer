@@ -62,10 +62,14 @@ public class MFAEnforcerAuthenticator implements Authenticator {
             enabledOptions.add("webauthn");
         }
 
+        // If WebAuthn authenticator attachment is not set to "cross-platform", we can also show a passkeys message.
+        final boolean webAuthnAuthenticatorCrossPlatform = realm.getWebAuthnPolicy().getAuthenticatorAttachment().equals("cross-platform");
+
         LoginFormsProvider form = context.form();
         form.setAttribute("username", context.getUser().getUsername());
         form.setAttribute("actionUri", context.getActionUrl(context.generateAccessCode()));
         form.setAttribute("enabledOptions", enabledOptions.toArray());
+        form.setAttribute("webAuthnIsCrossPlatform", webAuthnAuthenticatorCrossPlatform);
 
         if (formCustomizer != null) {
             formCustomizer.accept(form);
