@@ -40,7 +40,7 @@ It then should look like this.
 ### Variant 2: Checking a role for MFA
 
 *Optionally* (if you only want to enforce MFA for e.g. a specific role), set the subflow to **"Conditional"** and add a condition.
-Remember to configure the condition, give it an alias (can be arbitrary, we chose `check-mfa-role`) and make it **"Required"**.
+Remember to configure the condition (by clicking the gear icon and adding a role), give it an alias (can be arbitrary, we chose `check-mfa-role`) and make it **"Required"**.
 
 ![Adding a user role condition](./docs/setup-v2-user-role-condition-add.png)
 ![Adding a user role condition - Configuration](./docs/setup-v2-user-role-condition-configure.png)
@@ -48,6 +48,11 @@ Remember to configure the condition, give it an alias (can be arbitrary, we chos
 The flow then should look like this.
 
 ![Flow with user role condition](./docs/setup-v2-with-role-checking.png)
+
+### For all Variants
+
+To the `Conditional OTP` subflow (down below the `enforce-mfa` subflow), also **add the `WebAuthn Authenticator`** as an alternative and mark the `OTP Form` as alternative, too.
+You can also rename the subflow to `Check MFA`.
 
 ### Binding the flow
 
