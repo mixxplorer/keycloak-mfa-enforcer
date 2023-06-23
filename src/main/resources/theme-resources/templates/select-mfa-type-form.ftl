@@ -1,11 +1,10 @@
 <#import "template.ftl" as layout>
-<@layout.registrationLayout displayInfo=true; section>
+<@layout.registrationLayout; section>
     <#if section = "title">
         ${msg("mfaEnforcerFormTitle")}
     <#elseif section = "header">
         ${msg("mfaEnforcerFormTitle")}
     <#elseif section = "form">
-
         <h1>${msg("mfaEnforcerHello")} ${username}</h1>
         <p>
             ${msg("mfaEnforcerExplanation")}
