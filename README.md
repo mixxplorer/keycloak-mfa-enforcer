@@ -15,6 +15,22 @@ From this directory, you can create a `.jar` file with [maven](https://maven.apa
 docker run --rm -it -v $PWD:/mfa-enforcer -w /mfa-enforcer maven:3-openjdk-18 mvn clean package
 ```
 
+## Installation
+
+You can install this plugin for Keycloak by copying the `.jar` file from [building](#building) into the `providers` directory of Keycloak.
+It then automatically picks up the plugin and you can [configure](#configuration-in-keycloak) it accordingly.
+
+For a test with docker, you can run the following command from the root directory of this repo.
+**⚠️ Note:** This is only for development.
+For production deployment, please consider the [Keycloak Documentation](https://www.keycloak.org/documentation).
+
+```bash
+cp ./target/mfa-enforcer-*.jar ./target/mfa-enforcer.jar && \
+docker run --rm -v $PWD/target/mfa-enforcer.jar:/opt/keycloak/providers/mfa-enforcer.jar:ro -p 127.0.0.1:8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:22.0 start-dev
+```
+
+You can check whether the plugin was loaded by looking into the "Provider Info" tab of the master realm and finding `mfa-enforcer` in the `authenticator` SPI section.
+
 ## Configuration in Keycloak
 
 As this plugin hooks into the authentication flow, you need to create a new flow for your realm.
