@@ -26,7 +26,7 @@ For production deployment, please consider the [Keycloak Documentation](https://
 
 ```bash
 cp ./target/mfa-enforcer-*.jar ./target/mfa-enforcer.jar && \
-docker run --rm -v $PWD/target/mfa-enforcer.jar:/opt/keycloak/providers/mfa-enforcer.jar:ro -p 127.0.0.1:8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:23.0 start-dev
+docker run --rm -v $PWD/target/mfa-enforcer.jar:/opt/keycloak/providers/mfa-enforcer.jar:ro -p 127.0.0.1:8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:24.0 start-dev
 ```
 
 You can check whether the plugin was loaded by looking into the "Provider Info" tab of the master realm and finding `mfa-enforcer` in the `authenticator` SPI section.
