@@ -17,7 +17,7 @@ docker run --rm -it -v $PWD:/mfa-enforcer -w /mfa-enforcer maven:3-openjdk-18 mv
 
 ## Installation
 
-You can install this plugin for Keycloak by copying the `.jar` file from [building](#building) into the `providers` directory of Keycloak.
+You can install this plugin for Keycloak by copying the `.jar` file from the [CI (main)](https://rechenknecht.net/mixxplorer/keycloak/keycloak-mfa-enforcer/-/jobs/artifacts/main/download?job=build-jar) or [building](#building) into the `providers` directory of Keycloak.
 It then automatically picks up the plugin and you can [configure](#configuration-in-keycloak) it accordingly.
 
 For a test with docker, you can run the following command from the root directory of this repo.
