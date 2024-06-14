@@ -4,7 +4,7 @@ Enforce multi-factor authentication (MFA) for your [Keycloak](https://www.keyclo
 
 ## Goal of this plugin
 
-This Keycloak plugin solves a problem where administrator want to enforce MFA for users but also want the users to choose their type of MFA (e.g. choosing between WebAuthn or TOTP).  
+This Keycloak plugin solves a problem where administrator want to enforce MFA for users but also want the users to choose their type of MFA (e.g. choosing between WebAuthn or TOTP).
 This is done via a *authentication flow execution* that can be configured to be triggered when a user logs in that should have MFA enabled but has not.
 
 ## Building
@@ -17,7 +17,7 @@ docker run --rm -it -v $PWD:/mfa-enforcer -w /mfa-enforcer maven:3-openjdk-18 mv
 
 ## Installation
 
-You can install this plugin for Keycloak by copying the `.jar` file from [building](#building) into the `providers` directory of Keycloak.
+You can install this plugin for Keycloak by copying the `.jar` file from the [CI (main)](https://rechenknecht.net/mixxplorer/keycloak/keycloak-mfa-enforcer/-/jobs/artifacts/main/download?job=build-jar) or [building](#building) into the `providers` directory of Keycloak.
 It then automatically picks up the plugin and you can [configure](#configuration-in-keycloak) it accordingly.
 
 For a test with docker, you can run the following command from the root directory of this repo.
@@ -72,7 +72,7 @@ You can also rename the subflow to `Check MFA`.
 
 ### Binding the flow
 
-The complete flow (depending on your configuration) could look like this.  
+The complete flow (depending on your configuration) could look like this.
 You now **need to bind this flow as the default browser flow**.
 After that, users that log in (and did not setup MFA, yet) should see a prompt to configure MFA.
 
